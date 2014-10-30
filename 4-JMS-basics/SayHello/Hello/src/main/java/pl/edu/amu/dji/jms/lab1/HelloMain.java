@@ -25,7 +25,7 @@ public class HelloMain {
         Connection connection = connectionFactory.createConnection();
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         Destination queue = session.createQueue("SayHelloQueue");
-        MessageConsumer consumer = session.createConsumer(queue);
+        MessageConsumer consumer = session.createConsumer(queue, "ifDot");
 
         /*
         Create MessageConsumer instance from session (check Session class and createConsumer method)
@@ -45,6 +45,7 @@ public class HelloMain {
 
                 try {
                     System.out.println(((TextMessage) message).getText());
+
                 } catch (JMSException e) {
                     e.printStackTrace();
                 }

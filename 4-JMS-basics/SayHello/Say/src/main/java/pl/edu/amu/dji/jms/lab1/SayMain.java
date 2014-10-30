@@ -47,6 +47,7 @@ public class SayMain {
             //Create TextMessage from session with text variable
             //Send this message to queue (use producer for that)
             TextMessage textMessage = session.createTextMessage(text);
+            textMessage.setBooleanProperty("ifDot", text.contains("."));
             producer.send(textMessage);
         }
 
