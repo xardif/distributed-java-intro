@@ -22,10 +22,10 @@ public class HelloMain {
         - topic name should be "SayHelloTopic"
          */
 
-        Connection connection = null;
-        Session session = null;
-        Destination queue = null;
-        MessageConsumer consumer = null;
+        Connection connection = connectionFactory.createConnection();
+        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        Destination queue = session.createQueue("SayHelloQueue");
+        MessageConsumer producer = session.createConsumer(queue);
 
         /*
         Create MessageConsumer instance from session (check Session class and createConsumer method)
@@ -39,11 +39,20 @@ public class HelloMain {
         MessageListener helloListener = new MessageListener() {
             @Override
             public void onMessage(Message message) {
-                throw new UnsupportedOperationException();
+                if(!(message instanceof TextMessage)){
+                    throw new UnsupportedOperationException();
+                }
+
+                try {
+                    System.out.println(((TextMessage) message).getText());
+                } catch (JMSException e) {
+                    e.printStackTrace();
+                }
             }
         };
 
         //Set MessageListener implementation as a message listener in MessageConsumer
+        producer.setMessageListener(helloListener);
 
         connection.start();
     }
