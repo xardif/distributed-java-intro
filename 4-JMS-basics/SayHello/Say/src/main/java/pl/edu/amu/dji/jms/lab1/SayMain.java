@@ -28,11 +28,11 @@ public class SayMain {
 
         Connection connection = connectionFactory.createConnection();
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-        Destination topic =  session.createTopic("SayHelloTopic");
-        //session.createQueue("SayHelloQueue");
+        Destination queue = session.createQueue("SayHelloQueue");
 
-        MessageProducer producer = session.createProducer(topic);
+        MessageProducer producer = session.createProducer(queue);
         producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+        producer.setTimeToLive(3000);
 
         connection.start();
 
@@ -49,6 +49,12 @@ public class SayMain {
             TextMessage textMessage = session.createTextMessage(text);
             producer.send(textMessage);
         }
+
+        /*
+        EXERCISE 3
+            After 3 seconds messages send by Producer get timeout.
+            While all consumers all on, they receive it immediately.
+         */
 
         //Close stuff
         session.close();

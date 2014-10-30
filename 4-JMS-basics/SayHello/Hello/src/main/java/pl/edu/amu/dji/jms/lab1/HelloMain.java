@@ -24,8 +24,8 @@ public class HelloMain {
 
         Connection connection = connectionFactory.createConnection();
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-        Destination topic = session.createTopic("SayHelloTopic");
-        MessageConsumer consumer = session.createConsumer(topic);
+        Destination queue = session.createQueue("SayHelloQueue");
+        MessageConsumer consumer = session.createConsumer(queue);
 
         /*
         Create MessageConsumer instance from session (check Session class and createConsumer method)
