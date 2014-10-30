@@ -28,8 +28,10 @@ public class SayMain {
 
         Connection connection = connectionFactory.createConnection();
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-        Destination queue = session.createQueue("SayHelloQueue");
-        MessageProducer producer = session.createProducer(queue);
+        Destination topic =  session.createTopic("SayHelloTopic");
+        //session.createQueue("SayHelloQueue");
+
+        MessageProducer producer = session.createProducer(topic);
         producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
         connection.start();
@@ -45,7 +47,7 @@ public class SayMain {
             //Create TextMessage from session with text variable
             //Send this message to queue (use producer for that)
             TextMessage textMessage = session.createTextMessage(text);
-            producer.send(queue, textMessage);
+            producer.send(textMessage);
         }
 
         //Close stuff

@@ -24,8 +24,8 @@ public class HelloMain {
 
         Connection connection = connectionFactory.createConnection();
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-        Destination queue = session.createQueue("SayHelloQueue");
-        MessageConsumer producer = session.createConsumer(queue);
+        Destination topic = session.createTopic("SayHelloTopic");
+        MessageConsumer consumer = session.createConsumer(topic);
 
         /*
         Create MessageConsumer instance from session (check Session class and createConsumer method)
@@ -52,8 +52,16 @@ public class HelloMain {
         };
 
         //Set MessageListener implementation as a message listener in MessageConsumer
-        producer.setMessageListener(helloListener);
+        consumer.setMessageListener(helloListener);
 
+        /*
+        EXERCISE 1
+            2. Run - first HelloMain consumer gets all messages at once
+            3. Run - Consumers get messages ordered by who run first.
+        EXERCISE 2
+            2. Run - nothing has shown
+            3. Run - All consumers get same messages.
+        */
         connection.start();
     }
 }
