@@ -48,6 +48,7 @@ public class SayMain {
             //Send this message to queue (use producer for that)
             TextMessage textMessage = session.createTextMessage(text);
             textMessage.setBooleanProperty("ifDot", text.contains("."));
+            textMessage.setBooleanProperty("ifSpace", text.contains(" "));
             producer.send(textMessage);
         }
 
