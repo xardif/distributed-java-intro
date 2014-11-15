@@ -81,8 +81,19 @@ public class Main {
             runnables.add(new MyRunnable());
             executorService.execute(runnables.get(i));
         }
+
+
         executorService.shutdown();
         executorService.awaitTermination(0, TimeUnit.SECONDS);
         System.out.println("FINISHED");
+
+        ExecutorService es = Executors.newFixedThreadPool(4);
+        for(int i=0; i<4; i++){
+            es.execute(runnables.get(i));
+        }
+        es.shutdown();
+        es.awaitTermination(1, TimeUnit.MILLISECONDS);
+
+        System.out.println("!!FINISHED");
     }
 }
