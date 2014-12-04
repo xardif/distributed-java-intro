@@ -2,15 +2,19 @@ package xardif.project;
 
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Donor implements Runnable{
     private List<Item> items;
-    private String name;
+    private final String name;
+    private final MarketManager marketManager;
 
-    public Donor(String name, String[] itemNames) {
+    public Donor(String name, String[] itemNames, MarketManager marketManager) {
         this.name = name;
-        items = new ArrayList<>();
+        this.marketManager = marketManager;
+        items = new LinkedList<>();
         for(String itemName : itemNames){
             items.add(new Item(itemName));
         }
@@ -20,56 +24,43 @@ public class Donor implements Runnable{
 
     @Override
     public void run() {
-        Main.log.println(getLogPrefix() + " started!");
+        System.out.println(getLogPrefix() + " started!");
 
-        while(Main.marketManager.isMarketOpened() && !items.isEmpty()) {
+        while(marketManager.isMarketOpened() && !items.isEmpty()) {
             Item item = items.remove(0);
 
             try {
-                long sleepTime = Main.random.nextInt(25000) + 5000;
+                long sleepTime = ThreadLocalRandom.current().nextInt(25000) + 5000;
                 Thread.sleep(sleepTime);
-                Main.log.println(getLogPrefix() + " I've just waited " + sleepTime + " before registering an item.");
+                System.out.println(getLogPrefix() + " I've just waited " + sleepTime + " ms before registering an item.");
+
+                boolean registered = false;
+
+                while (marketManager.isMarketOpened() && !(registered = marketManager.getChairman().registerItem(item))) {
+                    Thread.sleep(ThreadLocalRandom.current().nextInt(5000) + 1);
+                }
+
+                System.out.println(getLogPrefix() + (registered ? " Registered an item: " + item + "." : " Can't register " + item +"."));
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-            while (Main.marketManager.getChairman().isOnItemLimit()) {
-                try {
-                    Thread.sleep(Main.random.nextInt(5000) + 1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-
-            Main.log.println(getLogPrefix() +
-                            (
-                                    Main.marketManager.getChairman().registerItem(item)
-                                            ?
-                                            " Registered an item: " + item + "."
-                                            :
-                                            " Item: " + item + " is already registered."
-                            )
-            );
         }
 
-        Main.log.println(getLogPrefix() + " says goodbye!");
+        System.out.println(getLogPrefix() + " says goodbye!");
     }
 
 
     public String getName() {
         return name;
     }
-
     public String getLogPrefix(){
         return "[DONOR:" + name + "]";
     }
-
     @Override
     public String toString() {
         return getName();
     }
-
     @Override
     public int hashCode() {
         return name.hashCode();

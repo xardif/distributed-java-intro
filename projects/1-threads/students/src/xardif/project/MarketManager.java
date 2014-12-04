@@ -14,37 +14,46 @@ public class MarketManager {
     private Thread chairmanThread;
 
     private Chairman chairman;
-    private boolean marketOpened;
+    private volatile boolean marketOpened;
 
     public MarketManager() {
         donors = new HashSet<>();
         recipients = new HashSet<>();
-        chairman = new Chairman();
+        chairman = new Chairman(this);
     }
 
     public void openMarket(){
-        Main.log.println("Market is opened");
+        System.out.println("Market is opened");
         marketOpened = true;
-        donorsExecutor = Executors.newFixedThreadPool(donors.size());
-        recipientsExecutor = Executors.newFixedThreadPool(recipients.size());
+        donorsExecutor = Executors.newCachedThreadPool();
+        recipientsExecutor = Executors.newCachedThreadPool();
         chairmanThread = new Thread(chairman);
-
         chairmanThread.start();
 
         for(Donor donor : donors){
             donorsExecutor.execute(donor);
         }
+        donorsExecutor.shutdown();
 
         for(Recipient recipient : recipients){
             recipientsExecutor.execute(recipient);
         }
+        recipientsExecutor.shutdown();
     }
 
     public void closeMarket(){
         marketOpened = false;
-        Main.log.println("Market is closing");
-        donorsExecutor.shutdown();
-        recipientsExecutor.shutdown();
+        System.out.println("Market is closing");
+        for(Recipient recipient : recipients){
+            synchronized (recipient){
+                recipient.notify();
+            }
+        }
+        for(Donor donor : donors){
+            synchronized (donor){
+                donor.notify();
+            }
+        }
     }
 
     public Chairman getChairman() {
