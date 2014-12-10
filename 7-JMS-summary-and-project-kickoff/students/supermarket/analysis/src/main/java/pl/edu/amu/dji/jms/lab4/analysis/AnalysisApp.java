@@ -1,7 +1,9 @@
 package pl.edu.amu.dji.jms.lab4.analysis;
 
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 public class AnalysisApp {
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        new ClassPathXmlApplicationContext("/context.xml");
     }
 }

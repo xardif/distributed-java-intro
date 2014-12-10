@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx.xsd
+                           ">
+
+    <context:component-scan base-package="pl.edu.amu.dji.jms.lab4.*"/>
+    <tx:annotation-driven/>
+
+    <bean id="connectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory" destroy-method="stop">
+        <property name="connectionFactory" ref="toUseConnectionFactory"/>
+    </bean>
+
+    <bean id="toUseConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://localhost:61616"/>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.jms.connection.JmsTransactionManager">
+        <property name="connectionFactory" ref="connectionFactory"/>
+    </bean>
+
+    <bean id="reportTopic" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg value="reportTopic"/>
+    </bean>
+
+    <bean id="messageListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="messageListener" ref="reportAdapter"/>
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="destination" ref="reportTopic"/>
+    </bean>
+
+    <bean id="reportAdapter" class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
+        <property name="delegate" ref="analysisService"/>
+        <property name="defaultListenerMethod" value="analyse"/>
+        <property name="messageConverter" ref="itemConverter"/>
+    </bean>
+
+    <bean id="analysisUI" class="pl.edu.amu.dji.jms.lab4.analysis.AnalysisUI"/>
+</beans>
