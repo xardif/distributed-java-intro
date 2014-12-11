@@ -21,7 +21,10 @@ import java.util.List;
 
 public class PointOfSales {
 
-    private List<Item> productList;
+    @Autowired
+    @Qualifier("productList")
+    private ProductList productList;
+
     private static int counter = 0;
     private int id;
 
@@ -35,7 +38,6 @@ public class PointOfSales {
 
     public PointOfSales() {
         this.id = counter++;
-        productList = new ArrayList<Item>();
     }
 
     public void init(){
@@ -47,7 +49,7 @@ public class PointOfSales {
     }
 
     public void changePrice(ChangePrice changePrice){
-        for(Item item : productList){
+        for(Item item : productList.getItemList()){
             if(changePrice.getItem().getName().equals(item.getName())){
                 item.setPrice(changePrice.getNewPrice());
                 break;
@@ -56,15 +58,15 @@ public class PointOfSales {
     }
 
     public void updateProductList(ProductList productList){
-        this.productList = productList.getItemList();
+        this.productList = productList;
     }
 
-    public List<Item> getProductList(){
+    public ProductList getProductList() {
         return productList;
     }
 
     public Item[] getProductArray() {
-        return productList.toArray(new Item[productList.size()]);
+        return productList.getItemList().toArray(new Item[productList.getItemList().size()]);
     }
 
     public int getId() {

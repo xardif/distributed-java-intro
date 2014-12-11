@@ -39,7 +39,7 @@
         <property name="connectionFactory" ref="connectionFactory"/>
         <property name="sessionTransacted" value="true"/>
         <property name="defaultDestination" ref="reportTopic"/>
-        <property name="messageConverter" ref="itemConverter"/>
+        <property name="messageConverter" ref="reportConverter"/>
     </bean>
 
     <!--initPoS-->
@@ -95,6 +95,12 @@
     </bean>
 
     <!--components-->
+
+    <bean id="productList" class="pl.edu.amu.dji.jms.lab4.service.message.ProductList">
+        <constructor-arg ref="itemList"/>
+    </bean>
+
+    <util:list id="itemList" value-type="pl.edu.amu.dji.jms.lab4.Item"/>
 
     <bean id="pointOfSales" class="pl.edu.amu.dji.jms.lab4.PointOfSales"/>
     <bean id="pointOfSalesPane" class="pl.edu.amu.dji.jms.lab4.PointOfSalesPane">

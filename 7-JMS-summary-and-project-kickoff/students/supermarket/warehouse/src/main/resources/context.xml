@@ -75,37 +75,11 @@
 
     <!--components-->
 
-    <bean id="productList" class="pl.edu.amu.dji.jms.lab4.service.message.ProductList">
+    <bean id="productList" class="pl.edu.amu.dji.jms.lab4.service.message.ProductList" init-method="init">
         <constructor-arg ref="itemList"/>
     </bean>
 
-    <bean id="generate1" class="pl.edu.amu.dji.jms.lab4.Item">
-        <constructor-arg index="0" value="Pair of Boots"/>
-        <constructor-arg index="1" value="5.21d"/>
-    </bean>
-    <bean id="generate2" class="pl.edu.amu.dji.jms.lab4.Item">
-        <constructor-arg index="0" value="Bottle of wine"/>
-        <constructor-arg index="1" value="10.50"/>
-    </bean>
-    <bean id="generate3" class="pl.edu.amu.dji.jms.lab4.Item">
-        <constructor-arg index="0" value="Shirt"/>
-        <constructor-arg index="1" value="20.0d"/>
-    </bean>
-
-    <util:list id="itemList" value-type="pl.edu.amu.dji.jms.lab4.Item">
-        <bean id="generate1" class="pl.edu.amu.dji.jms.lab4.Item">
-            <constructor-arg index="0" value="Pair of Boots"/>
-            <constructor-arg index="1" value="5.21d"/>
-        </bean>
-        <bean id="generate2" class="pl.edu.amu.dji.jms.lab4.Item">
-            <constructor-arg index="0" value="Bottle of wine"/>
-            <constructor-arg index="1" value="10.50"/>
-        </bean>
-        <bean id="generate3" class="pl.edu.amu.dji.jms.lab4.Item">
-            <constructor-arg index="0" value="Shirt"/>
-            <constructor-arg index="1" value="20.0d"/>
-        </bean>
-    </util:list>
+    <util:list id="itemList" value-type="pl.edu.amu.dji.jms.lab4.Item"/>
 
     <bean id="warehouse" class="pl.edu.amu.dji.jms.lab4.Warehouse"/>
     <bean id="warehouseUI" class="pl.edu.amu.dji.jms.lab4.WarehouseUI" init-method="init"/>

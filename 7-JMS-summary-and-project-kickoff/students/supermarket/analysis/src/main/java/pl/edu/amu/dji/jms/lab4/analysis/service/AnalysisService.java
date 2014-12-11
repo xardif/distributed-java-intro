@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edu.amu.dji.jms.lab4.Item;
 import pl.edu.amu.dji.jms.lab4.analysis.AnalysisUI;
+import pl.edu.amu.dji.jms.lab4.service.message.Report;
 
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
@@ -21,7 +22,7 @@ public class AnalysisService{
     private AnalysisUI analysisUI;
 
     @Transactional
-    public void analyse(Item soldItem){
-        analysisUI.report(soldItem);
+    public void analyse(Report report){
+        analysisUI.report(report);
     }
 }

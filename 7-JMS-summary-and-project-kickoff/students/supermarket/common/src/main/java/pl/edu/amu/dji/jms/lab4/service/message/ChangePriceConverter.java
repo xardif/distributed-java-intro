@@ -10,9 +10,7 @@ import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.Session;
 
-/**
- * Created by kasztan on 09.12.14.
- */
+
 
 @Component("changePriceConverter")
 public class ChangePriceConverter implements MessageConverter {

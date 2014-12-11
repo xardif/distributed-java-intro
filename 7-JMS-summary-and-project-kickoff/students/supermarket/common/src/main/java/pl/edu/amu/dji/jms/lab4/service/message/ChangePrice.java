@@ -2,9 +2,7 @@ package pl.edu.amu.dji.jms.lab4.service.message;
 
 import pl.edu.amu.dji.jms.lab4.Item;
 
-/**
- * Created by kasztan on 09.12.14.
- */
+
 public class ChangePrice {
     private Item item;
     private double newPrice;

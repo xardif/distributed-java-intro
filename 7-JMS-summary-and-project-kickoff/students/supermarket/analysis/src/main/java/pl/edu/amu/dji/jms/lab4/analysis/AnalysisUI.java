@@ -1,6 +1,7 @@
 package pl.edu.amu.dji.jms.lab4.analysis;
 
 import pl.edu.amu.dji.jms.lab4.Item;
+import pl.edu.amu.dji.jms.lab4.service.message.Report;
 import pl.edu.amu.dji.jms.lab4.utils.Swing;
 
 import javax.swing.*;
@@ -26,8 +27,8 @@ public class AnalysisUI extends JFrame{
         setVisible(true);
     }
 
-    public void report(Item soldItem){
-        textArea1.append("Item sold: " + soldItem +  "\r\n");
+    public void report(Report report){
+        textArea1.append("PoS id: " + report.getPosId() + " sold: " + report.getItem() +  ".\r\n");
         textArea1.setCaretPosition(textArea1.getDocument().getLength());
     }
 }

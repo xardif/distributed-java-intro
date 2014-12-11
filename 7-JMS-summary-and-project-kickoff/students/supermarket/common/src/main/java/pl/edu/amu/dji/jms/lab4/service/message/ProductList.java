@@ -5,9 +5,7 @@ import pl.edu.amu.dji.jms.lab4.Item;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by kasztan on 09.12.14.
- */
+
 public class ProductList {
     List<Item> itemList;
 
@@ -29,5 +27,11 @@ public class ProductList {
 
     public Item[] getItemArray() {
         return itemList.toArray(new Item[itemList.size()]);
+    }
+
+    public void init(){
+        itemList.add(new Item("Pair of Boots", 5.21d));
+        itemList.add(new Item("Bottle of wine", 10.5d));
+        itemList.add(new Item("Shirt", 20.0d));
     }
 }
