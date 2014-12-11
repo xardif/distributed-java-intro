@@ -94,6 +94,25 @@
         <property name="sessionTransacted" value="true"/>
     </bean>
 
+    <!--addNewItem-->
+
+    <bean id="addNewItemTopic" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg value="addNewItemTopic"/>
+    </bean>
+
+    <bean id="addNewItemServiceAdapter" class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
+        <property name="delegate" ref="addNewItemService"/>
+        <property name="defaultListenerMethod" value="add"/>
+        <property name="messageConverter" ref="itemConverter"/>
+    </bean>
+
+    <bean id="addNewItemListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="messageListener" ref="addNewItemServiceAdapter"/>
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="destination" ref="addNewItemTopic"/>
+        <property name="sessionTransacted" value="true"/>
+    </bean>
+
     <!--components-->
 
     <bean id="productList" class="pl.edu.amu.dji.jms.lab4.service.message.ProductList">

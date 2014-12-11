@@ -73,6 +73,19 @@
         <property name="messageConverter" ref="productListConverter"/>
     </bean>
 
+    <!--addNewItem-->
+
+    <bean id="addNewItemTopic" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg value="addNewItemTopic"/>
+    </bean>
+
+    <bean id="addNewItemJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="sessionTransacted" value="true"/>
+        <property name="defaultDestination" ref="addNewItemTopic"/>
+        <property name="messageConverter" ref="itemConverter"/>
+    </bean>
+
     <!--components-->
 
     <bean id="productList" class="pl.edu.amu.dji.jms.lab4.service.message.ProductList" init-method="init">

@@ -16,6 +16,7 @@ public class WarehouseUI extends JFrame{
     private JList<Item> list1;
     private JButton changePriceButton;
     private JButton addItemButton;
+    private JButton sendPriceListButton;
 
     @Autowired
     @Qualifier("warehouse")
@@ -29,6 +30,13 @@ public class WarehouseUI extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 if(list1.getModel().getSize()>0)
                     changePrice();
+            }
+        });
+
+        sendPriceListButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                warehouse.sendProductList();
             }
         });
 

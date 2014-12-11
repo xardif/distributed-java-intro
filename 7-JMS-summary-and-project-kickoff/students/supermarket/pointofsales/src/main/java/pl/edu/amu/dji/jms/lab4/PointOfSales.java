@@ -57,6 +57,10 @@ public class PointOfSales {
         }
     }
 
+    public void addNewItem(Item item){
+        productList.getItemList().add(item);
+    }
+
     public void updateProductList(ProductList productList){
         this.productList = productList;
     }
