@@ -8,10 +8,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>pl.edu.amu.dji.jms.lab10</groupId>
-    <artifactId>books</artifactId>
+    <artifactId>reviews</artifactId>
     <packaging>jar</packaging>
 
-    <name>books</name>
+    <name>reviews</name>
     <url>http://maven.apache.org</url>
 
     <properties>
