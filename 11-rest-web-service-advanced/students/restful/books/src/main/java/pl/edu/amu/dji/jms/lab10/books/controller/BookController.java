@@ -1,5 +1,6 @@
 package pl.edu.amu.dji.jms.lab10.books.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,12 +20,14 @@ public class BookController {
     @Autowired
     private ReviewService reviewService;
 
+    @JsonView(Book.MinimalView.class)
     @RequestMapping(method = RequestMethod.GET,headers="Accept=application/json")
     public List<Book> getAllBooks() {
         List<Book> books = Lists.newArrayList(repository.findAll());
         return books;
     }
 
+    @JsonView(Book.FullView.class)
     @RequestMapping(value="/{book}",method = RequestMethod.GET,headers="Accept=application/json")
     public Book getBook(@PathVariable Book book) {
         if(book == null)
@@ -34,6 +37,7 @@ public class BookController {
         return book;
     }
 
+    @JsonView(Book.MinimalView.class)
     @RequestMapping(method = RequestMethod.POST,headers="Accept=application/json")
     public Book createNewBook(@RequestBody Book book) {
         if(repository.exists(book.getIsbn()))
@@ -42,6 +46,7 @@ public class BookController {
         return book;
     }
 
+    @JsonView(Book.MinimalView.class)
     @RequestMapping(value="/{book}",method = RequestMethod.PUT,headers="Accept=application/json")
     public Book editBook(@PathVariable Book book, @RequestBody Book changedBook) {
         if(book == null)

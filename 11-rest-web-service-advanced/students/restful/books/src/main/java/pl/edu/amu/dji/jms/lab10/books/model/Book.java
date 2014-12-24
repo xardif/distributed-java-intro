@@ -1,12 +1,15 @@
 package pl.edu.amu.dji.jms.lab10.books.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 public class Book {
+
+    public interface MinimalView{}
+    public interface FullView extends MinimalView{}
 
     @Id
     //@GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,6 +37,7 @@ public class Book {
         this.authors = authors;
     }
 
+    @JsonView(MinimalView.class)
     public String getIsbn() {
         return isbn;
     }
@@ -42,6 +46,7 @@ public class Book {
         this.isbn = isbn;
     }
 
+    @JsonView(MinimalView.class)
     public String getTitle() {
         return title;
     }
@@ -50,6 +55,7 @@ public class Book {
         this.title = title;
     }
 
+    @JsonView(MinimalView.class)
     public String getDescription() {
         return description;
     }
@@ -58,6 +64,7 @@ public class Book {
         this.description = description;
     }
 
+    @JsonView(MinimalView.class)
     public List<String> getAuthors() {
         return authors;
     }
@@ -66,6 +73,7 @@ public class Book {
         this.authors = authors;
     }
 
+    @JsonView(FullView.class)
     public Iterable<Review> getReviews() {
         return reviews;
     }
