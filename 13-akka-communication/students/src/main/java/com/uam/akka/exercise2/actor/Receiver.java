@@ -3,12 +3,19 @@ package com.uam.akka.exercise2.actor;
 import akka.actor.UntypedActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+import com.uam.akka.exercise2.message.Answer;
+import com.uam.akka.exercise2.message.Question;
 
 public class Receiver extends UntypedActor {
 
-	private final LoggingAdapter log = Logging.getLogger(getContext().system(), this);
+    private final LoggingAdapter log = Logging.getLogger(getContext().system(), this);
 
-	@Override
-	public void onReceive(Object o) throws Exception {
-	}
+    @Override
+    public void onReceive(Object o) throws Exception {
+        if(o instanceof Question){
+            log.info(((Question)o).getText());
+            Answer answer = new Answer("Some answer");
+            getSender().tell(answer, getSelf());
+        }
+    }
 }
